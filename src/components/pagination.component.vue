@@ -22,7 +22,6 @@
           {{ page }}
         </button>
       </div>
-      <p v-else>Next {{ pagePerData }}</p>
 
       <button
         @click="nextPage"
@@ -39,21 +38,18 @@ import "../assets/styles/pagination.css";
 
 export default {
   props: ["paginationData"],
-  data() {
-    return {
-      pagePerData: 1,
-    };
-  },
   methods: {
     nextPage() {
-      this.paginationData.page = this.paginationData.page + 1;
-      this.pagePerData += 1;
-      this.$emit("page-change", this.paginationData.page);
+      if (this.paginationData.page < this.paginationData.totalPages) {
+        this.paginationData.page++;
+        this.$emit("page-change", this.paginationData.page);
+      }
     },
     prevPage() {
-      this.paginationData.page = this.paginationData.page - 1;
-      this.pagePerData -= 1;
-      this.$emit("page-change", this.paginationData.page);
+      if (this.paginationData.page > 1) {
+        this.paginationData.page--;
+        this.$emit("page-change", this.paginationData.page);
+      }
     },
     selectPage(page) {
       this.paginationData.page = page;
@@ -62,5 +58,3 @@ export default {
   },
 };
 </script>
-
-<style lang=""></style>

@@ -1,25 +1,22 @@
 <template lang="">
   <div>
-    <div v-if="dummyData.length">
-      <div class="searchAndBtn">
-        <SearchComponent @search="handleSearch" />
-        <ToggleButton />
+    <!-- <div v-if="dummyData.length"> -->
+    <div class="searchAndBtn">
+      <SearchComponent @search="handleSearch" />
+      <ToggleButton />
+    </div>
+    <LoaderComponent :loader="loader" />
+    <div v-if="dummyData.length > 0" class="container">
+      <div
+        v-for="item in dummyData"
+        :key="item.id"
+        class="box"
+        :class="{ expanded: item.status }"
+        @click="showContent(item)"
+      >
+        <DummyItemComponent :dummyItem="item" :searchTerm="searchFilterValue" />
       </div>
-      <LoaderComponent :loader="loader" />
-      <div v-if="dummyData.length > 0" class="container">
-        <div
-          v-for="item in dummyData"
-          :key="item.id"
-          class="box"
-          :class="{ expanded: item.status }"
-          @click="showContent(item)"
-        >
-          <DummyItemComponent
-            :dummyItem="item"
-            :searchTerm="searchFilterValue"
-          />
-        </div>
-      </div>
+      <!-- </div> -->
     </div>
     <div v-else>
       <div class="no-data">No data found</div>
@@ -57,7 +54,7 @@ export default {
       skipWatch: false,
       paginationObject: {
         page: 1,
-        pageSize: 20,
+        pageSize: 5, // Display 5 cards per page
         totalCount: 1,
         totalPages: 1,
       },
@@ -107,7 +104,7 @@ export default {
       let payload = {
         search: this.searchFilterValue,
         page: this.paginationObject.page,
-        limit: this.paginationObject.pageSize,
+        limit: 20, // Fetch 20 records from the backend
       };
       this.loader = true;
 
@@ -116,6 +113,7 @@ export default {
         this.skipWatch = true;
         this.dummyData = this.getDummyData;
 
+        // Filter based on search term
         if (this.searchFilterValue) {
           this.dummyData = this.dummyData.filter((item) =>
             item.title
@@ -126,14 +124,16 @@ export default {
 
         this.paginationObject.totalCount = totalPosts;
         this.paginationObject.totalPages = Math.ceil(
-          totalPosts / this.paginationObject.pageSize
+          totalPosts / 20 // Calculate total pages based on the 20 records fetched
         );
 
+        // Adjust data slicing logic for the current page (show 5 records per page on the frontend)
         const startIndex =
           (this.paginationObject.page - 1) * this.paginationObject.pageSize;
         const endIndex = startIndex + this.paginationObject.pageSize;
         this.dummyData = this.dummyData.slice(startIndex, endIndex);
 
+        // Disable pagination if no data
         if (this.dummyData.length === 0) {
           this.paginationObject.totalPages = 0;
         } else {

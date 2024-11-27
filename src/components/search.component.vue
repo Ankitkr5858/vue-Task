@@ -18,7 +18,7 @@ import "../assets/styles/search.css";
 import { debounce } from "lodash";
 
 export default {
-  nam: "SearchComponent",
+  name: "SearchComponent",
   data() {
     return {
       searchData: "",

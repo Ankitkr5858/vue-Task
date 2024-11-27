@@ -126,4 +126,36 @@ html[data-theme="light"] .pagination-button button:disabled {
 html[data-theme="light"] .pagination-button p {
   color: black;
 }
+
+
+.clear-icon {
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  transform: translateY(-50%);
+  font-size: 16px;
+  cursor: pointer;
+  visibility: visible;
+}
+
+/* Adjust the color for the dark theme */
+html[data-theme="dark"] .clear-icon {
+  color: #ddd; /* Light color for visibility in dark mode */
+}
+
+html[data-theme="dark"] .clear-icon:hover {
+  color: white; /* Change color on hover for dark theme */
+}
+
+/* Adjust the color for the light theme */
+html[data-theme="light"] .clear-icon {
+  color: gray; /* Default gray for the light theme */
+}
+
+html[data-theme="light"] .clear-icon:hover {
+  color: black; /* Change color on hover for light theme */
+}
+
+
+
 </style>
