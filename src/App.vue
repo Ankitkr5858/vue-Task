@@ -59,13 +59,13 @@ button {
 }
 
 html[data-theme="dark"] .toggle-button {
-  background-color: #333;
-  color: #fff;
+  background-color: transparent;
+  color: transparent;
 }
 
 html[data-theme="light"] .toggle-button {
-  background-color: #ccc;
-  color: #333;
+  background-color: transparent;
+  color: transparent;
 }
 
 html[data-theme="dark"] body,

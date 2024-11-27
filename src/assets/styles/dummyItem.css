@@ -75,6 +75,17 @@
 }
 .searchAndBtn {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
+  padding-left: 3rem;
+  padding-right: 3rem;
+}
+
+.backBtn {
+  padding: 0.8rem;
+}
+
+.highlight {
+  background-color: yellow;
+  font-weight: bold;
 }

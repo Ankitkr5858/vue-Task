@@ -1,40 +1,61 @@
-.search-field{
-    width: 30%;
-    padding: 1rem 0.5rem;
-    font-size: 16px;
-    border-radius: 5px;
-    border: 1px solid gray;
+.search-container {
+  position: relative;
+  display: inline-block;
 }
 
-.no-data{
-    height: 80vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: 600;
-    font-size: 20px;
+.search-field {
+  width: 22rem;
+  padding: 1rem 1rem;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid gray;
+  padding-right: 2.5rem; /* Add space for the cross icon */
+}
+
+.clear-icon {
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  transform: translateY(-50%);
+  font-size: 16px;
+  cursor: pointer;
+  color: gray;
+  visibility: visible;
+}
+
+.clear-icon:hover {
+  color: black;
 }
 
 @media (max-width: 1400px) {
-    .search-field {
-        width: 40%;
-    }
+  .search-field {
+    width: 40%;
   }
-  
-  @media (max-width: 1130px) {
-    .search-field {
-        width: 45%;
-    }
-  }
+}
 
-  @media (max-width: 768px) {
-    .search-field {
-        width: 70%;
-    }
+@media (max-width: 1130px) {
+  .search-field {
+    width: 45%;
   }
+}
 
-  @media (max-width: 500px) {
-    .search-field {
-        width: 90%;
-    }
+@media (max-width: 768px) {
+  .search-field {
+    width: 70%;
   }
+}
+
+@media (max-width: 500px) {
+  .search-field {
+    width: 90%;
+  }
+}
+
+.no-data {
+  height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+  font-size: 20px;
+}

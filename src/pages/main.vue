@@ -1,22 +1,30 @@
 <template lang="">
   <div>
-    <div class="searchAndBtn">
-      <ToggleButton />
-    </div>
-    <LoaderComponent :loader="loader" />
-    <SearchComponent @search="handleSearch" />
-    <div v-if="dummyData.length > 0" class="container">
-      <div
-        v-for="item in dummyData"
-        :key="item.id"
-        class="box"
-        :class="{ expanded: item.status }"
-        @click="showContent(item)"
-      >
-        <DummyItemComponent :dummyItem="item" />
+    <div v-if="dummyData.length">
+      <div class="searchAndBtn">
+        <SearchComponent @search="handleSearch" />
+        <ToggleButton />
+      </div>
+      <LoaderComponent :loader="loader" />
+      <div v-if="dummyData.length > 0" class="container">
+        <div
+          v-for="item in dummyData"
+          :key="item.id"
+          class="box"
+          :class="{ expanded: item.status }"
+          @click="showContent(item)"
+        >
+          <DummyItemComponent
+            :dummyItem="item"
+            :searchTerm="searchFilterValue"
+          />
+        </div>
       </div>
     </div>
-    <div v-else class="no-data">No data found</div>
+    <div v-else>
+      <div class="no-data">No data found</div>
+      <button class="backBtn" @click="goBack">Back</button>
+    </div>
     <div v-if="dummyData.length > 0">
       <PaginationComponent
         :paginationData="paginationObject"
@@ -80,6 +88,9 @@ export default {
     ...mapGetters(["getDummyData"]),
   },
   methods: {
+    goBack() {
+      window.location.reload();
+    },
     handlePageChange(newPage) {
       this.paginationObject.page = newPage;
       this.fetchdata();
@@ -105,6 +116,13 @@ export default {
         this.skipWatch = true;
         this.dummyData = this.getDummyData;
 
+        if (this.searchFilterValue) {
+          this.dummyData = this.dummyData.filter((item) =>
+            item.title
+              .toLowerCase()
+              .startsWith(this.searchFilterValue.toLowerCase())
+          );
+        }
 
         this.paginationObject.totalCount = totalPosts;
         this.paginationObject.totalPages = Math.ceil(

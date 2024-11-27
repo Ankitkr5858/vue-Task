@@ -1,3 +1,4 @@
+
 export default {
   state: {
     dummyData: [],
@@ -13,7 +14,7 @@ export default {
           url = `${process.env.VUE_APP_API_KEY}/posts?q=${payload.search}`;
         }
         const response = await fetch(url, { method: "GET" });
-        const totalPosts = response.headers.get('X-Total-Count');
+        const totalPosts = response.headers.get("X-Total-Count");
         const data = await response.json();
         commit("setDummyData", data);
         return totalPosts;

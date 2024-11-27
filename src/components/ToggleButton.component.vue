@@ -4,7 +4,8 @@
     :class="{ dark: isDarkMode }"
     @click="toggleTheme"
   >
-    {{ isDarkMode ? "Light Mode" : "Dark Mode" }}
+    <span v-if="isDarkMode" class="icon">🌙</span>
+    <span v-else class="icon">☀️</span>
   </button>
 </template>
 
@@ -15,12 +16,18 @@ export default {
       isDarkMode: false,
     };
   },
+  created() {
+    // Check local storage for the theme preference on load
+    const savedTheme = localStorage.getItem("theme") || "light";
+    this.isDarkMode = savedTheme === "dark";
+    document.documentElement.setAttribute("data-theme", savedTheme);
+  },
   methods: {
     toggleTheme() {
       this.isDarkMode = !this.isDarkMode;
       const theme = this.isDarkMode ? "dark" : "light";
       document.documentElement.setAttribute("data-theme", theme);
-      localStorage.setItem("theme", theme); 
+      localStorage.setItem("theme", theme);
       this.$emit("theme-changed", theme);
     },
   },
@@ -29,20 +36,25 @@ export default {
 
 <style scoped>
 .toggle-button {
-  padding: 10px 20px;
-  font-size: 16px;
+  padding: 10px;
+  font-size: 20px;
+  background: transparent;
   border: none;
-  border-radius: 20px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-html[data-theme="dark"] .toggle-button {
-  background-color: #333;
+.toggle-button .icon {
+  font-size: 24px;
+}
+
+html[data-theme="dark"] .toggle-button .icon {
   color: #fff;
 }
 
-html[data-theme="light"] .toggle-button {
-  background-color: #ccc;
+html[data-theme="light"] .toggle-button .icon {
   color: #333;
 }
 </style>
