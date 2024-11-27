@@ -1,0 +1,40 @@
+.search-field{
+    width: 30%;
+    padding: 1rem 0.5rem;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid gray;
+}
+
+.no-data{
+    height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 600;
+    font-size: 20px;
+}
+
+@media (max-width: 1400px) {
+    .search-field {
+        width: 40%;
+    }
+  }
+  
+  @media (max-width: 1130px) {
+    .search-field {
+        width: 45%;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .search-field {
+        width: 70%;
+    }
+  }
+
+  @media (max-width: 500px) {
+    .search-field {
+        width: 90%;
+    }
+  }

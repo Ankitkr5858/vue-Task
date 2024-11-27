@@ -1,0 +1,136 @@
+<template lang="">
+  <div>
+    <div class="searchAndBtn">
+      <ToggleButton />
+    </div>
+    <LoaderComponent :loader="loader" />
+    <SearchComponent @search="handleSearch" />
+    <div v-if="dummyData.length > 0" class="container">
+      <div
+        v-for="item in dummyData"
+        :key="item.id"
+        class="box"
+        :class="{ expanded: item.status }"
+        @click="showContent(item)"
+      >
+        <DummyItemComponent :dummyItem="item" />
+      </div>
+    </div>
+    <div v-else class="no-data">No data found</div>
+    <div v-if="dummyData.length > 0">
+      <PaginationComponent
+        :paginationData="paginationObject"
+        @page-change="handlePageChange"
+      />
+    </div>
+  </div>
+</template>
+
+<script>
+import SearchComponent from "../components/search.component.vue";
+import DummyItemComponent from "../components/dummyItem.component.vue";
+import { mapGetters } from "vuex";
+import "../assets/styles/dummyItem.css";
+import PaginationComponent from "../components/pagination.component.vue";
+import ToggleButton from "../components/ToggleButton.component.vue";
+
+export default {
+  components: {
+    SearchComponent,
+    ToggleButton,
+    DummyItemComponent,
+    PaginationComponent,
+  },
+  data() {
+    return {
+      searchFilterValue: "",
+      dummyData: [],
+      loader: true,
+      skipWatch: false,
+      paginationObject: {
+        page: 1,
+        pageSize: 20,
+        totalCount: 1,
+        totalPages: 1,
+      },
+    };
+  },
+  watch: {
+    searchFilterValue: {
+      immediate: true,
+      handler() {
+        if (this.skipWatch) {
+          this.fetchdata();
+        }
+      },
+    },
+    "paginationObject.page": {
+      immediate: true,
+      handler() {
+        if (this.skipWatch) {
+          this.fetchdata();
+        }
+      },
+    },
+  },
+  mounted() {
+    this.fetchdata();
+  },
+  computed: {
+    ...mapGetters(["getDummyData"]),
+  },
+  methods: {
+    handlePageChange(newPage) {
+      this.paginationObject.page = newPage;
+      this.fetchdata();
+    },
+    showContent(item) {
+      item.status = !item.status;
+    },
+    handleSearch(data) {
+      this.searchFilterValue = data;
+      this.paginationObject.page = 1;
+      this.fetchdata();
+    },
+    fetchdata() {
+      let payload = {
+        search: this.searchFilterValue,
+        page: this.paginationObject.page,
+        limit: this.paginationObject.pageSize,
+      };
+      this.loader = true;
+
+      this.$store.dispatch("getDummyData", payload).then((totalPosts) => {
+        this.loader = false;
+        this.skipWatch = true;
+        this.dummyData = this.getDummyData;
+
+
+        this.paginationObject.totalCount = totalPosts;
+        this.paginationObject.totalPages = Math.ceil(
+          totalPosts / this.paginationObject.pageSize
+        );
+
+        const startIndex =
+          (this.paginationObject.page - 1) * this.paginationObject.pageSize;
+        const endIndex = startIndex + this.paginationObject.pageSize;
+        this.dummyData = this.dummyData.slice(startIndex, endIndex);
+
+        if (this.dummyData.length === 0) {
+          this.paginationObject.totalPages = 0;
+        } else {
+          this.dummyData = this.dummyData.map((value) => {
+            return { ...value, status: false };
+          });
+        }
+
+        if (this.paginationObject.totalCount === 0) {
+          this.paginationObject.totalPages = 0;
+        }
+      });
+    },
+  },
+};
+</script>
+
+<style lang=""></style>
