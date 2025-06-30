@@ -11,9 +11,9 @@ app.component(LOADERCOMPONENT_TEXT, loaderComponent);
 // Set the initial theme based on localStorage or default to light theme
 const savedTheme = localStorage.getItem("theme");
 if (savedTheme) {
-  document.documentElement.setAttribute("data-theme", savedTheme);
+  document.documentElement.setAttribute(DATA_THEME_TEXT, savedTheme);
 } else {
-  document.documentElement.setAttribute("data-theme", "light");
+  document.documentElement.setAttribute(DATA_THEME_TEXT, "light");
 }
 
 // Mount the app to the DOM
