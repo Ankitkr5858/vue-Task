@@ -6,7 +6,7 @@ import loaderComponent from "./components/loader.component.vue";
 const app = createApp(App);
 
 // Register global components
-app.component("LoaderComponent", loaderComponent);
+app.component(LOADERCOMPONENT_TEXT, loaderComponent);
 
 // Set the initial theme based on localStorage or default to light theme
 const savedTheme = localStorage.getItem("theme");
